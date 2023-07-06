@@ -1,0 +1,68 @@
+﻿@model BookStore.Web.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h2>Book Details</h2>
+
+            <div>
+                <hr />
+                <dl class="row">
+
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Code)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.Code)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Author)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.Author)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.YearOfPublish)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.YearOfPublish)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IsAvailable)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.IsAvailable)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.Price)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Shelf)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.ShelfId)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i></a> @*|
+                <a asp-action="Edit" asp-route-id="@Model?.BookId"><i class="bi bi-pencil-square text-success"></i></a>*@
+            </div>
+        </div>
+    </div>
+</div>

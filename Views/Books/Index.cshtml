@@ -1,0 +1,159 @@
+﻿@model IEnumerable<BookStore.Web.Models.Book>
+
+
+@*<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>@ViewData["Title"]</title>*@
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <h2 class="mb-2">Books List</h2>
+        </div>
+        <div class="col-md-6" style="text-align:right">
+
+            <a asp-action="Create" class="btn btn-primary">Create New Book</a>
+        </div>
+    </div>
+
+    <div class="form-inline mb-2">
+        <div class="row">
+
+            <div class="col">
+
+                <label for="filterName">Book Name:</label>
+                <input type="text" class="form-control mr-3" id="filterName">
+            </div>
+            <div class="col">
+                <label for="filterAuthor">Author:</label>
+                <input type="text" class="form-control mr-3" id="filterAuthor">
+            </div>
+
+            <div class="col">
+
+                <label for="filterYear">Year of Publish:</label>
+                <input type="number" class="form-control mr-3" id="filterYear">
+
+            </div>
+
+            <div class="col">
+                <label for="filterShelf">Shelf:</label>
+                @Html.DropDownList("ShelfId", ViewData["ShelfId"] as SelectList, "Select Shelf", new { @class = "form-control", id = "filterShelf" })
+            </div>
+            <div class="col">
+                <label for="filterRack">Rack:</label>
+                @Html.DropDownList("RackId", ViewData["RackId"] as SelectList, "Select Rack", new { @class = "form-control", id = "filterRack" })
+            </div>
+            <div class="col">
+                <label for="filterAvailability">Availability:</label>
+                <select class="form-control mr-3" id="filterAvailability">
+                    <option value="">Select Availability</option>
+                    <option value="Available">Available</option>
+                    <option value="Deleted">Deleted</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="text-center mt-2">
+            <button type="button" class="btn btn-primary" id="applyFilters">Apply Filters</button>
+            &nbsp;
+            <button type="button" class="btn btn-secondary" id="resetFilters">Reset Filters</button>
+        </div>
+    </div>
+
+    <table id="booksTable" class="table table-striped table-bordered" data-tables>
+        <thead>
+            <tr>
+                <th class="col-md-1">Code</th>
+                <th class="col-md-2">Book Name</th>
+                <th class="col-md-2">Author</th>
+                <th class="col-md-2">Year of Publish</th>
+                <th class="col-md-1">Price</th>
+                <th class="col-md-1">Shelf</th>
+                <th class="col-md-1">Status</th>
+                <th class="col-md-1">PDF</th>
+                <th class="col-md-1">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Code</td>
+                    <td>@book.Name</td>
+                    <td>@book.Author</td>
+                    <td>@book.YearOfPublish</td>
+                    <td>@book.Price</td>
+                    <td>@book.Shelf.Code</td>
+                    <td class="@(book.IsAvailable ? "text-success" : "text-danger")">@GetAvailabilityStatus(book.IsAvailable)</td>
+                    <td>
+
+                        <a href="/Books/ExportToPdf?bookId=@book.BookId"> <i class="bi bi-file-earmark-pdf-fill text-danger"></i></a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@book.BookId"><i class="bi bi-pencil-square text-success"></i></a> |
+                        <a asp-action="Details" asp-route-id="@book.BookId"> <i class="bi bi-ticket-detailed-fill text-warning"></i></a> |
+                        <a asp-action="Delete" asp-route-id="@book.BookId"> <i class="bi bi-trash-fill text-danger"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div id="totalPrice">Total Price: $0</div>
+</div>
+@section scripts {
+    <script src="/js/site.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#booksTable').DataTable();
+
+            // Apply filters
+            $('#applyFilters').click(function () {
+                var filterName = $('#filterName').val().trim();
+                var filterAuthor = $('#filterAuthor').val().trim();
+                var filterYear = $('#filterYear').val().trim();
+                var filterShelf = $('#filterShelf').val();
+                var filterRack = $('#filterRack').val();
+                var filterAvailability = $('#filterAvailability').val();
+
+                table.columns(1).search(filterName);
+                table.columns(2).search(filterAuthor);
+                table.columns(3).search(filterYear);
+                table.columns(5).search(filterShelf);
+                table.columns(7).search(filterRack);
+                table.columns(6).search(filterAvailability);
+                table.draw();
+            });
+
+            // Reset filters
+            $('#resetFilters').click(function () {
+                $('#filterName').val('');
+                $('#filterAuthor').val('');
+                $('#filterYear').val('');
+                $('#filterShelf').val('');
+                $('#filterRack').val('');
+                $('#filterAvailability').val('');
+                table.search('').columns().search('').draw();
+            });
+
+            // Calculate and display total price
+            var totalPrice = 0;
+            $('#booksTable tbody tr').each(function () {
+                var price = parseInt($(this).find('td:eq(4)').text());
+                totalPrice += price;
+            });
+            $('#totalPrice').text('Total Price: $' + totalPrice);
+        });
+    </script>
+    }
+@functions {
+    public string GetAvailabilityStatus(bool isAvailable)
+    {
+        return isAvailable ? "Available" : "Deleted";
+    }
+}
