@@ -181,7 +181,7 @@ namespace BookStore.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["ShelfId"] = new SelectList(_context.Shelves, "ShelfId", "Code", book.ShelfId);
+            ViewData["ShelfId"] = new SelectList(_context.Shelves, "ShelfId", "ShelfId", book.ShelfId);
             return View(book);
         }
 

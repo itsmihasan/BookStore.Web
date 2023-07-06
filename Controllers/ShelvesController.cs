@@ -78,7 +78,7 @@ namespace BookStore.Web.Controllers
             ViewData["RackId"] = new SelectList(_context.Racks, "RackId", "RackId", shelf.RackId);
             return View(shelf);
         }
-
+        
         // POST: Shelves/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -88,7 +88,7 @@ namespace BookStore.Web.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Rack");
             if (ModelState.IsValid)
             {
                 try
