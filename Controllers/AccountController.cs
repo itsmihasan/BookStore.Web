@@ -41,10 +41,6 @@ namespace BookStore.Web.Controllers
             if (!IsValidUser(model.Username, model.Password))
             {
                 ModelState.AddModelError("InvalidCredentials", "Invalid username or password");
-                //bool isAvailable = true; // Or get the value from your logic
-                //ViewBag.IsAvailable = isAvailable;
-                //ViewBag.SomeScript = "alert('Added by the controller');";
-                //ViewBag.ShowAlert = true;
                 ViewBag.Message = "Invalid username or password";
                 return View(model);
             }

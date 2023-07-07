@@ -56,11 +56,21 @@
                                     <span asp-validation-for="Price" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Rack</label>
+                                    <select id="rackDropdown" class="form-control" asp-items="ViewBag.RackList"></select>
+                                </div>
+                            </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
                                     <label asp-for="ShelfId" class="control-label">Shelf</label>
-                                    <select asp-for="ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
-                                    <span asp-validation-for="ShelfId" class="text-danger"></span>
+                                    <select asp-for="ShelfId" class="form-control" id="shelfDropdown">
+                                        @foreach (var shelf in ViewBag.ShelfList)
+                                        {
+                                            <option value="@shelf.Value">@shelf.Text</option>
+                                        }
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -72,7 +82,6 @@
                                     </select>
                                 </div>
                             </div>
-
                         </div>
                         <div class="form-group text-center mt-4">
                             <a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i></a>
@@ -89,4 +98,56 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function () {
+            // Get references to the rack and shelf dropdowns
+            var rackDropdown = $('#rackDropdown');
+            var shelfDropdown = $('#shelfDropdown');
+
+            // Event handler for rack selection change
+            rackDropdown.on('change', function () {
+                var selectedRackId = rackDropdown.val();
+
+                // Make an AJAX request to fetch the shelves for the selected rack
+                $.ajax({
+                    url: '/Books/GetShelves',
+                    type: 'GET',
+                    data: { rackId: selectedRackId },
+                    success: function (response) {
+                        var selectedShelfId = shelfDropdown.val();
+
+                        // Clear the current shelf options
+                        shelfDropdown.empty();
+
+                        // Add the new shelf options
+                        response.forEach(function (shelf) {
+                            var option = $('<option></option>').val(shelf.value).text(shelf.text);
+
+                            // Select the option if it matches the existing shelf ID
+                            if (shelf.value == selectedShelfId) {
+                                option.attr('selected', 'selected');
+                            }
+
+                            shelfDropdown.append(option);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Get the selected rack ID from the ViewBag
+            var selectedRackId = "@ViewData["SelectedRackId"]";
+
+            // Select the option in the rack dropdown based on the existing rack ID
+            if (selectedRackId) {
+                $('#rackDropdown').val(selectedRackId);
+            }
+        });
+    </script>
 }

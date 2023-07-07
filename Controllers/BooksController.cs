@@ -91,10 +91,7 @@ namespace BookStore.Web.Controllers
                 .FromSqlRaw("EXEC GetBookDetails @BookId", parameters)
                 .AsEnumerable()
                 .FirstOrDefault();
-            //var book = await _context.Books
-            //    .Include(b => b.Shelf)
-            //    .FirstOrDefaultAsync(m => m.BookId == id);
-
+            
             return book;
         }
 
@@ -107,13 +104,11 @@ namespace BookStore.Web.Controllers
                 return NotFound();
             }
 
-            // Prepare the parameters for the stored procedure
             var parameters = new[]
             {
                 new SqlParameter("@BookId", id)
             };
 
-            // Execute the stored procedure to retrieve the book details
             var book = _context.Books
                 .FromSqlRaw("EXEC GetBookDetails @BookId", parameters)
                 .AsEnumerable()
@@ -124,7 +119,6 @@ namespace BookStore.Web.Controllers
                 return NotFound();
             }
 
-            // Retrieve the associated shelf information
             var shelfId = book.ShelfId;
             var shelf = await _context.Shelves
                 .Include(s => s.Rack)
@@ -134,10 +128,20 @@ namespace BookStore.Web.Controllers
             return View(book);
         }
 
+        public async Task<IActionResult> GetShelves(int rackId)
+        {
+            var shelves = await _context.Shelves.AsNoTracking().Where(s => s.RackId == rackId)
+                                          .Select(s => new { value = s.ShelfId, text = s.Code })
+                                          .ToListAsync();
+
+            return Json(shelves);
+        }
+
+
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewData["ShelfId"] = new SelectList(_context.Shelves, "ShelfId", "Code");
+            ViewData["RackId"] = new SelectList(_context.Racks, "RackId", "Code");
             return View();
         }
 
@@ -149,7 +153,7 @@ namespace BookStore.Web.Controllers
             ModelState.Remove("Shelf");
             if (ModelState.IsValid)
             {
-                // Invoke the stored procedure using ExecuteSqlCommandAsync
+
                 var parameters = new[]
                 {
                     new SqlParameter("@Code", book.Code),
@@ -178,12 +182,23 @@ namespace BookStore.Web.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books
+                .Include(b => b.Shelf.Rack)
+                .FirstOrDefaultAsync(b => b.BookId == id);
+
             if (book == null)
             {
                 return NotFound();
             }
-            ViewData["ShelfId"] = new SelectList(_context.Shelves, "ShelfId", "Code", book.ShelfId);
+
+            var racks = await _context.Racks.AsNoTracking().ToListAsync();
+            var shelves = await _context.Shelves.AsNoTracking().ToListAsync();
+
+            ViewData["RackList"] = new SelectList(racks, "RackId", "Code");
+            ViewData["ShelfList"] = new SelectList(shelves, "ShelfId", "Code");
+
+            // Add the existing rack ID to the ViewBag
+            ViewData["SelectedRackId"] = book.Shelf.RackId;
             return View(book);
         }
 
@@ -201,7 +216,7 @@ namespace BookStore.Web.Controllers
             {
                 try
                 {
-                    // Invoke the stored procedure using ExecuteSqlCommandAsync
+
                     var parameters = new[]
                     {
                         new SqlParameter("@BookId", book.BookId),
@@ -266,7 +281,6 @@ namespace BookStore.Web.Controllers
                 return NotFound();
             }
 
-            // Calling the stored procedure to delete the book
             await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC [dbo].[DeleteBook] {id}");
 
             return RedirectToAction(nameof(Index));
