@@ -23,28 +23,28 @@
                         <div class="row mb-2">
                             <div class="col-md-6 ">
                                 <div class="form-group">
-                                    <label asp-for="Code" class="control-label"></label>:
+                                    <label asp-for="Code" class="control-label"></label>
                                     <input asp-for="Code" class="form-control" />
                                     <span asp-validation-for="Code" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
-                                    <label asp-for="Name" class="control-label"></label>:
+                                    <label asp-for="Name" class="control-label"></label>
                                     <input asp-for="Name" class="form-control" />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
-                                    <label asp-for="Author" class="control-label"></label>:
+                                    <label asp-for="Author" class="control-label"></label>
                                     <input asp-for="Author" class="form-control" />
                                     <span asp-validation-for="Author" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
-                                    <label asp-for="YearOfPublish" class="control-label">Year Of Publish</label>:
+                                    <label asp-for="YearOfPublish" class="control-label">Year Of Publish</label>
                                     <input asp-for="YearOfPublish" class="form-control" />
                                     <span asp-validation-for="YearOfPublish" class="text-danger"></span>
                                 </div>
@@ -54,22 +54,24 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="Price" class="control-label"></label>:
+                                    <label asp-for="Price" class="control-label"></label>
                                     <input asp-for="Price" class="form-control" />
                                     <span asp-validation-for="Price" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="ShelfId" class="control-label">Shelf</label>:
+                                    <label asp-for="ShelfId" class="control-label">Shelf</label>
                                     <select asp-for="ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
                                 </div>
                             </div>
-                            <div class="col-md-6 mt-4">
-                                <div class="form-group form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
-                                    </label>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IsAvailable" class="control-label">Status</label>
+                                    <select asp-for="IsAvailable" class="form-control">
+                                        <option value="true">Available</option>
+                                        <option value="false">Deleted</option>
+                                    </select>
                                 </div>
                             </div>
                             @*<div class="col">

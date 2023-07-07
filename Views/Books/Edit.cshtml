@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
-                                    <label asp-for="YearOfPublish" class="control-label"></label>
+                                    <label asp-for="YearOfPublish" class="control-label">Year Of Publish</label>
                                     <input asp-for="YearOfPublish" class="form-control" />
                                     <span asp-validation-for="YearOfPublish" class="text-danger"></span>
                                 </div>
@@ -63,11 +63,13 @@
                                     <span asp-validation-for="ShelfId" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6 mt-4">
-                                <div class="form-group form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
-                                    </label>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IsAvailable" class="control-label">Status</label>
+                                    <select asp-for="IsAvailable" class="form-control">
+                                        <option value="true" selected="@Model.IsAvailable">Available</option>
+                                        <option value="false" selected="@(!Model.IsAvailable)">Deleted</option>
+                                    </select>
                                 </div>
                             </div>
 

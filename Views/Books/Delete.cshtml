@@ -33,10 +33,13 @@
                         :&nbsp;@Html.DisplayFor(model => model.Author)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.IsAvailable)
+                        @Html.DisplayName("Status")
                     </dt>
                     <dd class="col-sm-10">
-                        :&nbsp;@Html.DisplayFor(model => model.IsAvailable)
+                        @{
+                            string availability = Model.IsAvailable ? "Available" : "Deleted";
+                        }
+                        :&nbsp;@availability
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.Price)

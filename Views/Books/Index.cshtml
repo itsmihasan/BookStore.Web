@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-6" style="text-align:right">
 
-            <a asp-action="Create" class="btn btn-primary">Create New Book</a>
+            <a asp-action="Create" class="btn btn-primary">Create Book</a>
         </div>
     </div>
 
@@ -46,9 +46,9 @@
                 @Html.DropDownList("Rack", ViewData["RackList"] as SelectList, "Select Rack", new { @class = "form-control", id = "filterRack" })
             </div>
             <div class="col">
-                <label for="filterAvailability">Availability:</label>
+                <label for="filterAvailability">Status:</label>
                 <select class="form-control mr-3" id="filterAvailability">
-                    <option value="">Select Availability</option>
+                    <option value="">Select Status</option>
                     <option value="Available">Available</option>
                     <option value="Deleted">Deleted</option>
                 </select>
