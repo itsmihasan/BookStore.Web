@@ -39,11 +39,11 @@
 
             <div class="col">
                 <label for="filterShelf">Shelf:</label>
-                @Html.DropDownList("ShelfId", ViewData["ShelfId"] as SelectList, "Select Shelf", new { @class = "form-control", id = "filterShelf" })
+                @Html.DropDownList("Shelf", ViewData["ShelfList"] as SelectList, "Select Shelf", new { @class = "form-control", id = "filterShelf" })
             </div>
             <div class="col">
                 <label for="filterRack">Rack:</label>
-                @Html.DropDownList("RackId", ViewData["RackId"] as SelectList, "Select Rack", new { @class = "form-control", id = "filterRack" })
+                @Html.DropDownList("Rack", ViewData["RackList"] as SelectList, "Select Rack", new { @class = "form-control", id = "filterRack" })
             </div>
             <div class="col">
                 <label for="filterAvailability">Availability:</label>
@@ -71,6 +71,7 @@
                 <th class="col-md-2">Year of Publish</th>
                 <th class="col-md-1">Price</th>
                 <th class="col-md-1">Shelf</th>
+                <th class="col-md-1">Rack</th>
                 <th class="col-md-1">Status</th>
                 <th class="col-md-1">PDF</th>
                 <th class="col-md-1">Actions</th>
@@ -86,6 +87,7 @@
                     <td>@book.YearOfPublish</td>
                     <td>@book.Price</td>
                     <td>@book.Shelf.Code</td>
+                    <td>@book.Shelf.Rack.Code</td>
                     <td class="@(book.IsAvailable ? "text-success" : "text-danger")">@GetAvailabilityStatus(book.IsAvailable)</td>
                     <td>
 
@@ -125,8 +127,8 @@
                 table.columns(2).search(filterAuthor);
                 table.columns(3).search(filterYear);
                 table.columns(5).search(filterShelf);
-                table.columns(7).search(filterRack);
-                table.columns(6).search(filterAvailability);
+                table.columns(6).search(filterRack);
+                table.columns(7).search(filterAvailability);
                 table.draw();
             });
 

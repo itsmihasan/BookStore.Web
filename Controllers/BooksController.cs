@@ -27,9 +27,9 @@ namespace BookStore.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var shelves = await _context.Shelves.ToListAsync();
-            ViewData["ShelfId"] = new SelectList(shelves, "ShelfId", "Code");
+            ViewData["ShelfList"] = new SelectList(shelves, "ShelfId", "Code");
             var racks = await _context.Racks.ToListAsync();
-            ViewData["RackId"] = new SelectList(racks, "RackId", "Code");
+            ViewData["RackList"] = new SelectList(racks, "RackId", "Code");
             var books = await _context.Books.FromSqlRaw("EXEC [dbo].[GetBooks]")
                 .ToListAsync();
             return View(books);
