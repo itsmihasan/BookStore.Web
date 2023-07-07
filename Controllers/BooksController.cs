@@ -125,9 +125,11 @@ namespace BookStore.Web.Controllers
             }
 
             // Retrieve the associated shelf information
-            //var shelfId = book.ShelfId;
-            //var shelf = await _context.Shelves.FindAsync(shelfId);
-            //book.Shelf = shelf;
+            var shelfId = book.ShelfId;
+            var shelf = await _context.Shelves
+                .Include(s => s.Rack)
+                .FirstOrDefaultAsync(m => m.ShelfId == shelfId);
+            book.Shelf = shelf;
 
             return View(book);
         }
@@ -181,7 +183,7 @@ namespace BookStore.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["ShelfId"] = new SelectList(_context.Shelves, "ShelfId", "ShelfId", book.ShelfId);
+            ViewData["ShelfId"] = new SelectList(_context.Shelves, "ShelfId", "Code", book.ShelfId);
             return View(book);
         }
 
@@ -241,7 +243,7 @@ namespace BookStore.Web.Controllers
             }
 
             var book = await _context.Books
-                .Include(b => b.Shelf)
+                .Include(b => b.Shelf.Rack)
                 .FirstOrDefaultAsync(m => m.BookId == id);
 
             if (book == null)

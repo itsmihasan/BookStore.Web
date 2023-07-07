@@ -13,7 +13,7 @@ public partial class Book
 
     public string Author { get; set; } = null!;
 
-    public int? YearOfPublish { get; set; }
+    public int YearOfPublish { get; set; }
 
     public bool IsAvailable { get; set; }
 

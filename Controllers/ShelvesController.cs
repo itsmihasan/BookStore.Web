@@ -43,7 +43,7 @@ namespace BookStore.Web.Controllers
         // GET: Shelves/Create
         public IActionResult Create()
         {
-            ViewData["RackId"] = new SelectList(_context.Racks, "RackId", "RackId");
+            ViewData["RackId"] = new SelectList(_context.Racks, "RackId", "Code");
             return View();
         }
 
@@ -52,6 +52,7 @@ namespace BookStore.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShelfId,Code,RackId")] Shelf shelf)
         {
+            ModelState.Remove("Rack");
             if (ModelState.IsValid)
             {
                 _context.Add(shelf);
@@ -75,7 +76,7 @@ namespace BookStore.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["RackId"] = new SelectList(_context.Racks, "RackId", "RackId", shelf.RackId);
+            ViewData["RackId"] = new SelectList(_context.Racks, "RackId", "Code", shelf.RackId);
             return View(shelf);
         }
         

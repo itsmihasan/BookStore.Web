@@ -48,7 +48,13 @@
                         @Html.DisplayNameFor(model => model.Shelf)
                     </dt>
                     <dd class="col-sm-10">
-                        :&nbsp;@Html.DisplayFor(model => model.Shelf.ShelfId)
+                        :&nbsp;@Html.DisplayFor(model => model.Shelf.Code)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Shelf.Rack)
+                    </dt>
+                    <dd class="col-sm-10">
+                        :&nbsp;@Html.DisplayFor(model => model.Shelf.Rack.Code)
                     </dd>
                 </dl>
 
