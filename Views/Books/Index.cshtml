@@ -1,15 +1,9 @@
 ﻿@model IEnumerable<BookStore.Web.Models.Book>
 
-
-@*<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>@ViewData["Title"]</title>*@
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-
-            <h2 class="mb-2">Books List</h2>
+            <h2 class="mb-1">Books List</h2>
         </div>
         <div class="col-md-6" style="text-align:right">
 
@@ -17,7 +11,7 @@
         </div>
     </div>
 
-    <div class="form-inline mb-2">
+    <div class="form-inline mb-1">
         <div class="row">
 
             <div class="col">
@@ -47,7 +41,7 @@
             </div>
             <div class="col">
                 <label for="filterAvailability">Status:</label>
-                <select class="form-control mr-3" id="filterAvailability">
+                <select class="form-control" id="filterAvailability">
                     <option value="">Select Status</option>
                     <option value="Available">Available</option>
                     <option value="Deleted">Deleted</option>
